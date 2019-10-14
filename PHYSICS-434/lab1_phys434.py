@@ -59,43 +59,59 @@ r2 = stats.lognorm.rvs(s2, size = 100000)
 r3 = stats.lognorm.rvs(s3, size = 100000)
 
 figure(1)
-plt.hist(r1, 50, density=True)
+#plt.hist(r1, 50, density=True)
 plt.xlim([0, 3.5])
 x1 = np.linspace(0,3.5,100000)
-plt.plot(x1,stats.lognorm.pdf(x1,s1))
+plt.plot(x1,stats.lognorm.pdf(x1,s1), label='s = 0.340')
 
-figure(2)
-plt.hist(r2, 50, density=True)
+#figure(2)
+#plt.hist(r2, 50, density=True)
 plt.xlim([0, 7])
 x2 = np.linspace(0,7,100000)
-plt.plot(x2,stats.lognorm.pdf(x2,s2))
+plt.plot(x2,stats.lognorm.pdf(x2,s2), label='s = 0.626')
 
-figure(3)
-plt.hist(r3, 50, density=True)
+#igure(3)
+#plt.hist(r3, 50, density=True)
 plt.xlim([0, 12])
 x3 = np.linspace(0,12,100000)
-plt.plot(x3,stats.lognorm.pdf(x3,s3))
-
-plt.show()
+plt.plot(x3,stats.lognorm.pdf(x3,s3), label='s=0.954')
+plt.legend()
 
 #SECTION 1.3
 
 #A.
 # I have selected a value relevant to my first graph (Figure 1) of x = 1.5.
-# From the histogram this x value has a relatively high probability but is
-# still far enough from the mean which is centered around 1.
+# From the histogram this x value has a relatively high probability.
 
 #B.
-# The question we want to ask is "what is the standard deviation (sigma)
-# of the measurement value 1.5 for a lognormal distribution with parameter
-# s = 0.340?".
+# The question we want to ask is "if we have a signal-free, lognormal background
+# distribution, what is the probability of a chosen measurement being from our
+# background and what value of the standard deviation (sigma) does this probability
+# correspond to in a normal distribution?"
 
 #C.
 
-sig = np.std(r1)
-print(sig)
-x = 1.5
-num_std = x/sig
-print(num_std)
+#D./E.
+
+measurement = 1.5
+prob = stats.lognorm.cdf(measurement,s1)
+sigma = stats.norm.ppf(prob)
+print(prob)
+
+#A. I chose the Binomial distribution. The binomial distribution
+figure(4)
+a = np.random.binomial(100000, 0.5)
+b = np.random.binomial(100000, 0.25)
+c = np.random.binomial(100000, 0.75)
+
+x = np.arange(-20,20,1)
+plt.step(x,stats.binom.pmf(x,10,0.5),label = '\u03bb = 99.5562 events/interval')
+plt.step(x,stats.binom.pmf(x,10,0.1),label = '\u03bb = 99.5562 events/interval')
+plt.step(x,stats.binom.pmf(x,10,0.7),label = '\u03bb = 99.5562 events/interval')
+
+figure(5)
+plt.hist(b,density=True)
+
+plt.show()
 
 
