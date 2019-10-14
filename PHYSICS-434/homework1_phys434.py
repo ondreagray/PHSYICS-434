@@ -34,4 +34,4 @@ x = np.linspace(4.95,5.05,1000)
 ax.plot(x,stats.norm.pdf(x,loc = 5., scale = 0.01),linewidth = 8,alpha = 0.7)
 plt.show()
 
-
+##That's lab 1
