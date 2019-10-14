@@ -20,9 +20,10 @@ import plotly.graph_objects as go
 #B.
 # Below is the integration of the standard normal distribution.
 # This integration goes from negative infinity to the given value of z.
-z = 1
+z = 3.5
 table = stats.norm.cdf(z)
-print(table)
+print(stats.norm.ppf(0.84))
+print(stats.norm.ppf(0.99))
 # For z = 1, python outputed the value 0.841 which matches the z-table
 # found on wikipedia at https://en.wikipedia.org/wiki/Standard_normal_table.
 
@@ -32,7 +33,6 @@ print(table)
 # sigma. To show this, I saved the value given by th cdf function and entere
 # it into the ppf function and received the original val;ue (z = 1) back.
 percentage = stats.norm.ppf(table)
-print(percentage)
 
 #D.
 # The ppf function returns a sigma value that is centered around a mean
@@ -59,20 +59,21 @@ r2 = stats.lognorm.rvs(s2, size = 100000)
 r3 = stats.lognorm.rvs(s3, size = 100000)
 
 figure(1)
-#plt.hist(r1, 50, density=True)
 plt.xlim([0, 3.5])
+plt.hist(r1, 50, density=True)
 x1 = np.linspace(0,3.5,100000)
 plt.plot(x1,stats.lognorm.pdf(x1,s1), label='s = 0.340')
 
-#figure(2)
-#plt.hist(r2, 50, density=True)
+figure(2)
+plt.hist(r2, 50, density=True)
 plt.xlim([0, 7])
 x2 = np.linspace(0,7,100000)
 plt.plot(x2,stats.lognorm.pdf(x2,s2), label='s = 0.626')
+plt.legend()
 
-#igure(3)
-#plt.hist(r3, 50, density=True)
+figure(3)
 plt.xlim([0, 12])
+plt.hist(r3, 50, density=True)
 x3 = np.linspace(0,12,100000)
 plt.plot(x3,stats.lognorm.pdf(x3,s3), label='s=0.954')
 plt.legend()
@@ -105,13 +106,17 @@ b = np.random.binomial(100000, 0.25)
 c = np.random.binomial(100000, 0.75)
 
 x = np.arange(-20,20,1)
-plt.step(x,stats.binom.pmf(x,10,0.5),label = '\u03bb = 99.5562 events/interval')
-plt.step(x,stats.binom.pmf(x,10,0.1),label = '\u03bb = 99.5562 events/interval')
-plt.step(x,stats.binom.pmf(x,10,0.7),label = '\u03bb = 99.5562 events/interval')
+plt.step(x,stats.binom.pmf(x,10,0.5),label = 'k = x : n = 10 : p = 0.5')
+plt.step(x,stats.binom.pmf(x,10,0.1),label = 'k = x : n = 10 : p = 0.1')
+plt.step(x,stats.binom.pmf(x,10,0.7),label = 'k = x : n = 10 : p = 0.7')
+plt.legend()
 
-figure(5)
-plt.hist(b,density=True)
-
-plt.show()
+k = 10
+n = 100
+p = 0.25
+probBinom = stats.binom.cdf(k,n,p)
+sigBinom =stats.norm.ppf(probBinom)
+print(sigBinom)
+print(probBinom)
 
 
